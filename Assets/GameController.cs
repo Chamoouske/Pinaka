@@ -15,12 +15,14 @@ public class GameController : MonoBehaviour
     public GameObject Confirm;
     public GameObject Close;
     public GameObject Fox;
-
+    public GameObject Login;
+    public GameObject Quit;
     public GameObject Dificulty;
     private int Mode;
     private int dialogNum=0;
     public Text txtDialog;
     public Text txtTabu;
+    public Text txtQuestion; // alterar o txt da tabuada
     public static int testSucess; // variável auxiliar que testa se o usuário pegou a maçã correta
     public GameObject DialogFox;
 
@@ -89,12 +91,40 @@ public class GameController : MonoBehaviour
     }
 
     public void mainMenu(){ // exibe menu principal
+        // zerando as variáveis da gameplay -----------
         Spawn_Fruit.n1 = 0;
+        txtQuestion.text = "";
+        Spawn_Fruit.blockUp = 0;
+        Spawn_Fruit.timer = 0;
+        Spawn_Fruit.n2 = 0;
+        Spawn_Fruit.maxTabuada = 0;
+        Score = 0;
+        scoreText.text = Score.ToString();
         sinal = false;
-        SceneManager.LoadScene(0);
+        Time.timeScale = 0;
+        SoundPoppyCorn.Stop();
+        // --------------------------------------
+
+        SoundButton.Play();
+        Close.SetActive(false);
+        Fox.SetActive(false);
+        Login.SetActive(false);
+        Gameplay.SetActive(false);
+        GamePaused.SetActive(false);
+        Confirm.SetActive(false);
+        Menu.SetActive(true);
     }
 
+    public void returnLogin(){ // volta ao login
+        Menu.SetActive(false);
+        Close.SetActive(false);
+        Login.SetActive(true);
+    }
     
+    public void quitApp(){
+        Login.SetActive(false);
+        Quit.SetActive(true);
+    }
 
     public void selectLevel(){ // exibe a seleção da tabuada
         SoundButton.Play();
@@ -173,6 +203,7 @@ public class GameController : MonoBehaviour
     public void CloseMenu(){ // exibe tela de confirmação pra sair do jogo 
         SoundButton.Play();
         Menu.SetActive(false);
+        Login.SetActive(false);
         Close.SetActive(true);
     }
 

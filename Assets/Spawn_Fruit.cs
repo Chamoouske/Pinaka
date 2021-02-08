@@ -10,15 +10,15 @@ public class Spawn_Fruit : MonoBehaviour
     public GameObject Coin3;
     public float height;
     public float maxTime;
-    private float timer =0f;
+    public static float timer =0f;
 
     public static int n1=0;
-    private int n2 = 0;
+    public static int n2 = 0;
     public static int result;
     public Text Question;
     string count;
     public static int turnCorrect;
-    private int maxTabuada = 0;
+    public static int maxTabuada = 0;
 
     public static bool tryGameplay =true;
 
@@ -29,7 +29,7 @@ public class Spawn_Fruit : MonoBehaviour
     public GameObject Fox;
 
     public Text txtQuest;
-    private int blockUp=0; // pra impedir o update de chamar a função de exibir score várias vezes
+    public static int blockUp=0; // pra impedir o update de chamar a função de exibir score várias vezes
 
     void Start()
     {
