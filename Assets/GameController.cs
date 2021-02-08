@@ -26,6 +26,13 @@ public class GameController : MonoBehaviour
     public Text txtQuestion; // alterar o txt da tabuada
     public static int testSucess; // variável auxiliar que testa se o usuário pegou a maçã correta
     public GameObject DialogFox;
+    // -------- TELA DE RANKING
+    public GameObject TelaRank;
+    public GameObject OpenRank;
+    public GameObject CloseRank;
+    public Text User;
+    public Text Rank;
+    //-------------------------------
 
     public GameObject btnSoundOn;
     public GameObject btnSoundOff;
@@ -60,8 +67,8 @@ public class GameController : MonoBehaviour
     public Text txtPassword;
 
     //----------------------------
-//Classe de Acesso ao banco de dados
-        MySqlConnection conn = new MySqlConnection("Server = localhost; Database=pinaka;Uid=root;Pwd=;");
+    //Classe de Acesso ao banco de dados
+    MySqlConnection conn = new MySqlConnection("Server = localhost; Database=pinaka;Uid=root;Pwd=;");
     // Start is called before the first frame update
     void Start()
     { 
@@ -242,7 +249,7 @@ public class GameController : MonoBehaviour
         testaBotaoPause = testaBotaoPause+1;
     }
 
-      
+
     //Verificação se usuario existe para fazer Login
     public void validacao(){
         //Nao mexa, GAMBIARRA PESADA
@@ -312,10 +319,39 @@ public class GameController : MonoBehaviour
     public void RegisterPinaka(){
         user = txtUser.text.ToString();
         password = txtPassword.text.ToString();
-         if(user == "" || password == ""){
+        if(user == "" || password == ""){
             msgErro.text = "Preencha todos os campos"; 
         }else{
             validacaoRegistro();
         }
+    }
+
+    public void AbrirRank(){
+        Menu.SetActive(false);
+        TelaRank.SetActive(true);
+
+        Ranking();
+    }
+
+    public void FecharRank(){
+        TelaRank.SetActive(false);
+        Menu.SetActive(true);
+    }
+
+    public void Ranking(){
+        string nomes;
+        Rank.text += "\n";
+        User.text += "\n";
+        
+        MySqlCommand command = new MySqlCommand("SELECT * FROM usuarios ORDER BY Score DESC LIMIT 10", conn);
+        
+        using (MySqlDataReader results = command.ExecuteReader())
+        {
+            while (results.Read())
+            {
+                Rank.text += "\n" + results["Score"].ToString();
+                User.text += "\n" + results["Nome"].ToString();
+            }
+        };
     }
 }
