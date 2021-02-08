@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using MySql.Data.MySqlClient;
 
 public class GameController : MonoBehaviour
 {
@@ -59,11 +60,13 @@ public class GameController : MonoBehaviour
     public Text txtPassword;
 
     //----------------------------
-
+//Classe de Acesso ao banco de dados
+        MySqlConnection conn = new MySqlConnection("Server = localhost; Database=pinaka;Uid=root;Pwd=;");
     // Start is called before the first frame update
     void Start()
-    {
+    { 
         Time.timeScale = 0; // pausa a execução
+        conn.Open(); //Abertura do banco de dados
     }
 
     // Update is called once per frame
@@ -239,11 +242,80 @@ public class GameController : MonoBehaviour
         testaBotaoPause = testaBotaoPause+1;
     }
 
+      
+    //Verificação se usuario existe para fazer Login
+    public void validacao(){
+        //Nao mexa, GAMBIARRA PESADA
+        int veri = 2;
+        string userbd;
+        string passwordbd;
+        MySqlCommand query = new MySqlCommand("SELECT * FROM usuarios", conn);
+        using (MySqlDataReader reader = query.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                userbd = reader["Nome"].ToString();
+                passwordbd = reader["Senha"].ToString();
+                if(userbd == user && passwordbd == password){
+                    mainMenu();
+                    veri = 1;
+                }
+            }
+
+            if(veri != 1){
+                msgErro.text = "Login ou senha incorretos!";    
+            }
+        }   
+    }
+
+    //Verificação se usuario existe para poder ser registrado
+    public void validacaoRegistro(){
+        //Nao mexa, GAMBIARRA PESADA
+        int veri = 2;
+        string userbd;
+        
+        //Comando SQL pra validação
+        MySqlCommand query = new MySqlCommand("SELECT * FROM usuarios", conn);
+        using (MySqlDataReader reader = query.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                userbd = reader["Nome"].ToString();
+                if(userbd == user){
+                    msgErro.text = "Usuario já cadastrado";   
+                    veri = 1;
+                }
+            }
+        } 
+
+        if(veri != 1){
+            MySqlCommand command = new MySqlCommand("INSERT INTO usuarios (Nome, Senha) VALUES ('"+user+"','"+password+"');", conn);
+            command.ExecuteNonQuery();
+            mainMenu();
+        }
+    }
+
     /* ------------------------- LOGIN ------------------- */
     public void LoginPinaka(){
         user = txtUser.text.ToString();
         password = txtPassword.text.ToString();
+        if(user == "" || password == ""){
+            msgErro.text = "Preencha todos os campos"; 
+        }else{
+            validacao();
+        }
+        
         // msgErro.text = "Login ou senha incorretos!";  -------- linha que altera o texto caso a senha/login estejam errados
-        mainMenu();
+    }
+
+    /* ------------------------- Registro ----------------- */
+    public void RegisterPinaka(){
+        user = txtUser.text.ToString();
+        password = txtPassword.text.ToString();
+         if(user == "" || password == ""){
+            msgErro.text = "Preencha todos os campos"; 
+        }else{
+            validacaoRegistro();
+        }
     }
 }

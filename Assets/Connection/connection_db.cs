@@ -19,15 +19,20 @@ public class connection_db : MonoBehaviour
         MySqlDataReader reader = query.ExecuteReader();
         reader.Read();
 
-        Usuario = reader.GetString(1);
+        Usuario = reader.GetString(0);
         Debug.Log(Usuario);
-
-
     }
 
     
     void Update()
     {
         
+    }
+
+    public void Insert(string Usuario, string Senha)
+    {
+        conn.Open();
+        MySqlCommand query = new MySqlCommand("INSERT INTO usuarios (Nome, Senha, Score) VALUES ("+Usuario+","+Senha+")");
+        query.ExecuteNonQuery();
     }
 }
