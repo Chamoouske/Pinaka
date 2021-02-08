@@ -3892,7 +3892,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &844506882
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6743,7 +6743,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1240346797
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9334,6 +9334,7 @@ MonoBehaviour:
   Login: {fileID: 1240346796}
   Quit: {fileID: 922561658}
   Dificulty: {fileID: 1957037816}
+  TelaScore: {fileID: 1432968613}
   txtDialog: {fileID: 1348487615}
   txtTabu: {fileID: 61928220}
   txtQuestion: {fileID: 1335980611}
@@ -11176,7 +11177,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
-    m_MaxSize: 40
+    m_MaxSize: 50
     m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
