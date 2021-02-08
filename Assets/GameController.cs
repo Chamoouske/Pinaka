@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
     public GameObject Login;
     public GameObject Quit;
     public GameObject Dificulty;
+    public GameObject TelaScore;
     private int Mode;
     private int dialogNum=0;
     public Text txtDialog;
@@ -68,7 +69,7 @@ public class GameController : MonoBehaviour
 
     //----------------------------
     //Classe de Acesso ao banco de dados
-    MySqlConnection conn = new MySqlConnection("Server = localhost; Database=pinaka;Uid=root;Pwd=;");
+    static MySqlConnection conn = new MySqlConnection("Server = localhost; Database=pinaka;Uid=root;Pwd=;");
     // Start is called before the first frame update
     void Start()
     { 
@@ -134,6 +135,9 @@ public class GameController : MonoBehaviour
         Gameplay.SetActive(false);
         GamePaused.SetActive(false);
         Confirm.SetActive(false);
+        TelaScore.SetActive(false);
+        Dificulty.SetActive(false);
+        Level.SetActive(false);
         Menu.SetActive(true);
     }
 
@@ -339,7 +343,6 @@ public class GameController : MonoBehaviour
     }
 
     public void Ranking(){
-        string nomes;
         Rank.text += "\n";
         User.text += "\n";
         
@@ -353,5 +356,10 @@ public class GameController : MonoBehaviour
                 User.text += "\n" + results["Nome"].ToString();
             }
         };
+    }
+
+    public static void UpdateRank(int ptn){
+        MySqlCommand command = new MySqlCommand("UPDATE usuarios SET Score = Score + " + ptn +" WHERE Nome LIKE '" + user + "'", conn);
+        command.ExecuteNonQuery();
     }
 }

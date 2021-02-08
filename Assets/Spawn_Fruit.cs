@@ -94,6 +94,8 @@ public class Spawn_Fruit : MonoBehaviour
         Fox.SetActive(false);
         Time.timeScale = 0;
         TelaScore.SetActive(true);
+
+        GameController.UpdateRank(controller.Score);
     }
 
     public void reiniciaGame(){
