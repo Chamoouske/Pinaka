@@ -48,6 +48,18 @@ public class GameController : MonoBehaviour
 
     public AudioSource soundVictory;
     public int finalGame;
+
+    //------------ LOGIN  -----------
+    public Text msgErro;
+
+    public static string user;
+    public Text txtUser;
+
+    public static string password;
+    public Text txtPassword;
+
+    //----------------------------
+
     // Start is called before the first frame update
     void Start()
     {
@@ -225,5 +237,13 @@ public class GameController : MonoBehaviour
             btnSoundOn.SetActive(true); 
         }
         testaBotaoPause = testaBotaoPause+1;
+    }
+
+    /* ------------------------- LOGIN ------------------- */
+    public void LoginPinaka(){
+        user = txtUser.text.ToString();
+        password = txtPassword.text.ToString();
+        // msgErro.text = "Login ou senha incorretos!";  -------- linha que altera o texto caso a senha/login estejam errados
+        mainMenu();
     }
 }
