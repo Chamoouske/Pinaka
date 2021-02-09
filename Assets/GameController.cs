@@ -40,10 +40,13 @@ public class GameController : MonoBehaviour
     public GameObject MudarSenha;
     public GameObject ApagarUser;
     public GameObject FecharUser;
-    public static string userPerfil;
+    public GameObject TelaClose;
+    public InputField userPerfil;
     public Text txtUserPerfil;
-    public static string passwordPerfil;
+    public InputField passwordPerfil;
     public Text txtPasswordPerfil;
+    public Text msgErroPerfil;
+    public GameObject btnPerfil;
     //-------------------------------
 
     public GameObject btnSoundOn;
@@ -245,6 +248,14 @@ public class GameController : MonoBehaviour
         Close.SetActive(true);
     }
 
+    public void CloseAccount(){ // exibe tela de confirmação para excluir conta
+        SoundButton.Play();
+        Menu.SetActive(false);
+        Login.SetActive(false);
+        TelaUser.SetActive(false);
+        TelaClose.SetActive(true);
+    }
+
     public void quitGame(){ // sai do jogo
         SoundButton.Play();
         Application.Quit();
@@ -375,11 +386,40 @@ public class GameController : MonoBehaviour
         command.ExecuteNonQuery();
     }
 
+    public void mostrarPerfil(){
+        Menu.SetActive(false);
+        TelaUser.SetActive(true);
+        TelaClose.SetActive(false);
+        MySqlCommand command = new MySqlCommand("SELECT * FROM usuarios WHERE Nome = '"+user+"'", conn);
+        using (MySqlDataReader results = command.ExecuteReader())
+        {
+            while (results.Read())
+            {
+                userPerfil.text = results["Nome"].ToString();
+                passwordPerfil.text = results["Senha"].ToString();
+            }
+        };
+    }
+
+    public void AlterarNome(){
+        MySqlCommand command = new MySqlCommand("UPDATE usuarios SET Nome = '" + txtUserPerfil.text.ToString() + "' WHERE Nome LIKE '" + user + "'", conn);
+        command.ExecuteNonQuery();
+        user = txtUserPerfil.text.ToString();
+        msgErroPerfil.text = "Nome alterado com sucesso"; 
+    }
+
+    public void AlterarSenha(){
+        MySqlCommand command = new MySqlCommand("UPDATE usuarios SET Senha = '" + txtPasswordPerfil.text.ToString() + "' WHERE Nome LIKE '" + user + "'", conn);
+        command.ExecuteNonQuery();
+        msgErroPerfil.text = "Senha alterado com sucesso";
+    }
+
     public void DeleteUser(){
+        TelaClose.SetActive(false);
         MySqlCommand command = new MySqlCommand("DELETE FROM usuarios WHERE Nome LIKE '" + user + "'", conn);
         command.ExecuteNonQuery();
 
         TelaUser.SetActive(false);
-        CloseMenu();
+        returnLogin();
     }
 }
