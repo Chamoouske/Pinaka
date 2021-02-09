@@ -46,6 +46,7 @@ public class GameController : MonoBehaviour
     public InputField passwordPerfil;
     public Text txtPasswordPerfil;
     public Text msgErroPerfil;
+    public Text txtScore;
     public GameObject btnPerfil;
     //-------------------------------
 
@@ -160,6 +161,7 @@ public class GameController : MonoBehaviour
         Menu.SetActive(false);
         Close.SetActive(false);
         Login.SetActive(true);
+        msgErro.text = "";
     }
     
     public void quitApp(){
@@ -331,6 +333,7 @@ public class GameController : MonoBehaviour
 
     /* ------------------------- LOGIN ------------------- */
     public void LoginPinaka(){
+        SoundButton.Play();
         user = txtUser.text.ToString();
         password = txtPassword.text.ToString();
         if(user == "" || password == ""){
@@ -344,6 +347,7 @@ public class GameController : MonoBehaviour
 
     /* ------------------------- Registro ----------------- */
     public void RegisterPinaka(){
+        SoundButton.Play();
         user = txtUser.text.ToString();
         password = txtPassword.text.ToString();
         if(user == "" || password == ""){
@@ -354,6 +358,7 @@ public class GameController : MonoBehaviour
     }
 
     public void AbrirRank(){
+        SoundButton.Play();
         Menu.SetActive(false);
         TelaRank.SetActive(true);
 
@@ -361,6 +366,7 @@ public class GameController : MonoBehaviour
     }
 
     public void FecharRank(){
+        SoundButton.Play();
         TelaRank.SetActive(false);
         Menu.SetActive(true);
     }
@@ -387,9 +393,11 @@ public class GameController : MonoBehaviour
     }
 
     public void mostrarPerfil(){
+        SoundButton.Play();
         Menu.SetActive(false);
         TelaUser.SetActive(true);
         TelaClose.SetActive(false);
+        msgErroPerfil.text = "";
         MySqlCommand command = new MySqlCommand("SELECT * FROM usuarios WHERE Nome = '"+user+"'", conn);
         using (MySqlDataReader results = command.ExecuteReader())
         {
@@ -397,28 +405,37 @@ public class GameController : MonoBehaviour
             {
                 userPerfil.text = results["Nome"].ToString();
                 passwordPerfil.text = results["Senha"].ToString();
+                txtScore.text = results["Score"].ToString();
             }
         };
     }
 
     public void AlterarNome(){
-        MySqlCommand command = new MySqlCommand("UPDATE usuarios SET Nome = '" + txtUserPerfil.text.ToString() + "' WHERE Nome LIKE '" + user + "'", conn);
-        command.ExecuteNonQuery();
-        user = txtUserPerfil.text.ToString();
-        msgErroPerfil.text = "Nome alterado com sucesso"; 
+        SoundButton.Play();
+        if(user == txtUserPerfil.text.ToString()){
+            msgErroPerfil.text = "O Nome inserido é o mesmo registrado";
+        }else{
+            MySqlCommand command = new MySqlCommand("UPDATE usuarios SET Nome = '" + txtUserPerfil.text.ToString() + "' WHERE Nome LIKE '" + user + "'", conn);
+            command.ExecuteNonQuery();
+            user = txtUserPerfil.text.ToString();
+            msgErroPerfil.text = "Nome alterado com sucesso";
+        }
     }
 
     public void AlterarSenha(){
+        SoundButton.Play();
         MySqlCommand command = new MySqlCommand("UPDATE usuarios SET Senha = '" + txtPasswordPerfil.text.ToString() + "' WHERE Nome LIKE '" + user + "'", conn);
         command.ExecuteNonQuery();
         msgErroPerfil.text = "Senha alterado com sucesso";
     }
 
     public void DeleteUser(){
+        SoundButton.Play();
         TelaClose.SetActive(false);
         MySqlCommand command = new MySqlCommand("DELETE FROM usuarios WHERE Nome LIKE '" + user + "'", conn);
         command.ExecuteNonQuery();
 
+        msgErro.text = "Conta apagada com sucesso";
         TelaUser.SetActive(false);
         returnLogin();
     }
