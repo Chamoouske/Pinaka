@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using MySql.Data;
 using MySql.Data.MySqlClient;
+using System;
+using System.Data;
 
 public class GameController : MonoBehaviour
 {
