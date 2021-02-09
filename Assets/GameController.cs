@@ -343,8 +343,8 @@ public class GameController : MonoBehaviour
     }
 
     public void Ranking(){
-        Rank.text += "\n";
-        User.text += "\n";
+        Rank.text = "Pontos\n";
+        User.text = "Jogador\n";
         
         MySqlCommand command = new MySqlCommand("SELECT * FROM usuarios ORDER BY Score DESC LIMIT 10", conn);
         
