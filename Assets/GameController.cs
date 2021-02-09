@@ -300,7 +300,7 @@ public class GameController : MonoBehaviour
         } 
 
         if(veri != 1){
-            MySqlCommand command = new MySqlCommand("INSERT INTO usuarios (Nome, Senha) VALUES ('"+user+"','"+password+"');", conn);
+            MySqlCommand command = new MySqlCommand("INSERT INTO usuarios (Nome, Senha, Score) VALUES ('"+user+"','"+password+"', 0);", conn);
             command.ExecuteNonQuery();
             mainMenu();
         }
