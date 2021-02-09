@@ -34,6 +34,17 @@ public class GameController : MonoBehaviour
     public Text User;
     public Text Rank;
     //-------------------------------
+    //---------TELA DE USUARIO-------
+    public GameObject TelaUser;
+    public GameObject MudarNome;
+    public GameObject MudarSenha;
+    public GameObject ApagarUser;
+    public GameObject FecharUser;
+    public static string userPerfil;
+    public Text txtUserPerfil;
+    public static string passwordPerfil;
+    public Text txtPasswordPerfil;
+    //-------------------------------
 
     public GameObject btnSoundOn;
     public GameObject btnSoundOff;
@@ -138,6 +149,7 @@ public class GameController : MonoBehaviour
         TelaScore.SetActive(false);
         Dificulty.SetActive(false);
         Level.SetActive(false);
+        TelaUser.SetActive(false);
         Menu.SetActive(true);
     }
 
@@ -361,5 +373,13 @@ public class GameController : MonoBehaviour
     public static void UpdateRank(int ptn){
         MySqlCommand command = new MySqlCommand("UPDATE usuarios SET Score = Score + " + ptn +" WHERE Nome LIKE '" + user + "'", conn);
         command.ExecuteNonQuery();
+    }
+
+    public void DeleteUser(){
+        MySqlCommand command = new MySqlCommand("DELETE FROM usuarios WHERE Nome LIKE '" + user + "'", conn);
+        command.ExecuteNonQuery();
+
+        TelaUser.SetActive(false);
+        CloseMenu();
     }
 }
